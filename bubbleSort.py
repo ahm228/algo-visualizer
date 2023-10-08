@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 
 # Initialize Pygame
 pygame.init()
@@ -12,38 +11,43 @@ ARRAY_SIZE = 100
 RECT_WIDTH = WIDTH // ARRAY_SIZE
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sorting Algorithm Visualizer")
+CLOCK = pygame.time.Clock()
 
 # Generate an array of random integers
 array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
 
-# Function to draw the array
 def draw_array(array, color=[]):
+    WIN.fill((0, 0, 0))
     for i in range(len(array)):
-        rect_color = (0, 128, 255)  # Blue color by default
         if i in color:
-            rect_color = (255, 0, 0)  # Red color for selected elements
+            rect_color = (255, 0, 0)  # Red for current items
+        else:
+            rect_color = (0, 128, 255)  # Blue by default
         pygame.draw.rect(WIN, rect_color, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
+    pygame.display.update()
 
-# Main loop
-run = True
-while run:
-    WIN.fill((0, 0, 0))  # Fill the window with black
-
-    # Event handling
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    # Bubble sort
+def bubble_sort(array):
     for i in range(len(array)):
         for j in range(0, len(array) - i - 1):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
             if array[j] > array[j + 1]:
-                # Swap
                 array[j], array[j + 1] = array[j + 1], array[j]
-
-                # Draw the updated array
                 draw_array(array, [j, j+1])
-                pygame.display.update()
-                time.sleep(0.02)  # Slow down for visualization
+                CLOCK.tick(60)
 
-pygame.quit()
+def main():
+    run = True
+    while run:
+        draw_array(array)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        bubble_sort(array)
+        run = False
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
