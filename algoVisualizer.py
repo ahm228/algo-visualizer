@@ -229,6 +229,13 @@ def bogoSort(array):
         drawArray(array, range(len(array)))
         CLOCK.tick(200)
 
+def regenerateArray():
+    global array
+    array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
+    drawArray(array)
+    drawButtons()
+    pygame.display.update()
+
 BUTTONS = [
     {"label": "Bubble Sort", "function": bubbleSort},
     {"label": "Insertion Sort", "function": insertionSort},
@@ -240,6 +247,8 @@ BUTTONS = [
     {"label": "Shell Sort", "function": shellSort},
     {"label": "Bogo Sort", "function": bogoSort},
 ]
+
+BUTTONS.append({"label": "Restart", "function": "RESTART"})
 
 FONT = pygame.font.SysFont("Arial", 20)
 BUTTON_WIDTH, BUTTON_HEIGHT = 200, 40
@@ -258,6 +267,9 @@ def drawButtons():
 def handleButtonClick(pos):
     for idx, button in enumerate(BUTTONS):
         if START_X <= pos[0] <= START_X + BUTTON_WIDTH and START_Y + idx * (BUTTON_HEIGHT + 10) <= pos[1] <= START_Y + idx * (BUTTON_HEIGHT + 10) + BUTTON_HEIGHT:
+            if button["function"] == "RESTART":
+                regenerateArray()
+                return None
             return button["function"]
     return None
 
