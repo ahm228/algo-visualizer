@@ -276,7 +276,6 @@ def main():
     run = True
     
     while run:
-        drawArray(array)
         drawButtons()
         pygame.display.update()
         
