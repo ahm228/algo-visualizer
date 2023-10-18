@@ -29,7 +29,7 @@ def bubbleSort(array):
             if array[j] > array[j + 1]:
                 array[j], array[j + 1] = array[j + 1], array[j]
                 drawArray(array, [j, j+1])
-                CLOCK.tick(350)
+                CLOCK.tick(200)
 
 def insertionSort(array):
     for i in range(1, len(array)):
@@ -39,10 +39,10 @@ def insertionSort(array):
             array[j + 1] = array[j]
             j -= 1
             drawArray(array, [j, j+1])
-            CLOCK.tick(350)
+            CLOCK.tick(200)
         array[j + 1] = key
         drawArray(array, [j, i])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
 
 def selectionSort(array):
     for i in range(len(array)):
@@ -51,10 +51,10 @@ def selectionSort(array):
             if array[j] < array[minIdx]:
                 minIdx = j
             drawArray(array, [j, minIdx])
-            CLOCK.tick(350)
+            CLOCK.tick(200)
         array[i], array[minIdx] = array[minIdx], array[i]
         drawArray(array, [i, minIdx])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
 
 def mergeSort(array, l=0, r=None):
     if r is None:
@@ -85,20 +85,20 @@ def merge(array, l, m, r):
             array[k] = R[j]
             j += 1
         drawArray(array, [k])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
         k += 1
 
     while i < n1:
         array[k] = L[i]
         drawArray(array, [k])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
         i += 1
         k += 1
 
     while j < n2:
         array[k] = R[j]
         drawArray(array, [k])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
         j += 1
         k += 1
 
@@ -122,11 +122,11 @@ def partition(array, low, high):
             i = i + 1
             array[i], array[j] = array[j], array[i]
             drawArray(array, [i, j])
-            CLOCK.tick(350)
+            CLOCK.tick(200)
 
     array[i + 1], array[high] = array[high], array[i + 1]
     drawArray(array, [i + 1, high])
-    CLOCK.tick(350)
+    CLOCK.tick(200)
     
     return i + 1
 
@@ -139,7 +139,7 @@ def heapSort(array):
     for i in range(n-1, 0, -1):
         array[i], array[0] = array[0], array[i]
         drawArray(array, [i, 0])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
         heapify(array, i, 0)
 
 def heapify(array, n, i):
@@ -156,7 +156,7 @@ def heapify(array, n, i):
     if largest != i:
         array[i], array[largest] = array[largest], array[i]
         drawArray(array, [i, largest])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
         
         heapify(array, n, largest)
 
@@ -179,12 +179,12 @@ def countingSortForRadix(array, position):
         count[index % 10] -= 1
         i -= 1
         drawArray(array, [i])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
 
     for i in range(len(array)):
         array[i] = output[i]
         drawArray(array, [i])
-        CLOCK.tick(350)
+        CLOCK.tick(200)
 
 def radixSort(array):
     maxNum = max(array)
@@ -207,12 +207,12 @@ def shellSort(array):
             while j >= gap and array[j - gap] > temp:
                 array[j] = array[j - gap]
                 drawArray(array, [j, j-gap])
-                CLOCK.tick(350)
+                CLOCK.tick(200)
                 j -= gap
             
             array[j] = temp
             drawArray(array, [j])
-            CLOCK.tick(350)
+            CLOCK.tick(200)
 
         gap //= 2
 
@@ -227,7 +227,7 @@ def bogoSort(array):
     while not isSorted(array):
         random.shuffle(array)
         drawArray(array, range(len(array)))
-        CLOCK.tick(350)
+        CLOCK.tick(200)
 
 BUTTONS = [
     {"label": "Bubble Sort", "function": bubbleSort},
