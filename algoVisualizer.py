@@ -17,9 +17,9 @@ def drawArray(array, color=[]):
     WIN.fill((0, 0, 0))
     for i in range(len(array)):
         if i in color:
-            rectColor = (255, 0, 0)  # Red for current items
+            rectColor = (255, 0, 0)
         else:
-            rectColor = (0, 128, 255)  # Blue by default
+            rectColor = (0, 128, 255)
         pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
     pygame.display.update()
 
@@ -253,7 +253,6 @@ BUTTONS.append({"label": "Restart", "function": "RESTART"})
 FONT = pygame.font.SysFont("Arial", 20)
 BUTTON_WIDTH, BUTTON_HEIGHT = 200, 40
 
-# Calculate starting position for the buttons such that they occupy the bottom of the screen
 TOTAL_BUTTONS_HEIGHT = len(BUTTONS) * (BUTTON_HEIGHT + 10)
 START_X, START_Y = 10, HEIGHT - TOTAL_BUTTONS_HEIGHT
 
@@ -277,9 +276,9 @@ def main():
     run = True
     
     while run:
-        drawArray(array)  # This will draw the array.
-        drawButtons()     # This will draw the buttons.
-        pygame.display.update()  # Update the display
+        drawArray(array)
+        drawButtons()
+        pygame.display.update()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
