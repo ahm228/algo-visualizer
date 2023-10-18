@@ -21,7 +21,7 @@ def drawArray(array, color=[]):
         else:
             rectColor = (0, 128, 255)  # Blue by default
         pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
-    #pygame.display.update()
+    pygame.display.update()
 
 def bubbleSort(array):
     for i in range(len(array)):
