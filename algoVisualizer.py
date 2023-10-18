@@ -21,14 +21,11 @@ def drawArray(array, color=[]):
         else:
             rectColor = (0, 128, 255)  # Blue by default
         pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
-    pygame.display.update()
+    #pygame.display.update()
 
 def bubbleSort(array):
     for i in range(len(array)):
         for j in range(0, len(array) - i - 1):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
             if array[j] > array[j + 1]:
                 array[j], array[j + 1] = array[j + 1], array[j]
                 drawArray(array, [j, j+1])
@@ -39,9 +36,6 @@ def insertionSort(array):
         key = array[i]
         j = i - 1
         while j >= 0 and key < array[j]:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
             array[j + 1] = array[j]
             j -= 1
             drawArray(array, [j, j+1])
@@ -54,9 +48,6 @@ def selectionSort(array):
     for i in range(len(array)):
         minIdx = i
         for j in range(i+1, len(array)):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
             if array[j] < array[minIdx]:
                 minIdx = j
             drawArray(array, [j, minIdx])
@@ -86,9 +77,6 @@ def merge(array, l, m, r):
     i, j, k = 0, 0, l
 
     while i < n1 and j < n2:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
 
         if L[i] <= R[j]:
             array[k] = L[i]
@@ -101,9 +89,6 @@ def merge(array, l, m, r):
         k += 1
 
     while i < n1:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
         array[k] = L[i]
         drawArray(array, [k])
         CLOCK.tick(350)
@@ -111,9 +96,6 @@ def merge(array, l, m, r):
         k += 1
 
     while j < n2:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
         array[k] = R[j]
         drawArray(array, [k])
         CLOCK.tick(350)
@@ -135,9 +117,6 @@ def partition(array, low, high):
     i = low - 1
 
     for j in range(low, high):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
 
         if array[j] <= pivot:
             i = i + 1
@@ -168,21 +147,17 @@ def heapify(array, n, i):
     l = 2 * i + 1
     r = 2 * i + 2
 
-    if l < n and array[i] < array[l]:
+    if l < n and array[l] > array[largest]:
         largest = l
 
-    if r < n and array[largest] < array[r]:
+    if r < n and array[r] > array[largest]:
         largest = r
 
     if largest != i:
         array[i], array[largest] = array[largest], array[i]
         drawArray(array, [i, largest])
         CLOCK.tick(350)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
+        
         heapify(array, n, largest)
 
 def countingSortForRadix(array, position):
@@ -199,9 +174,6 @@ def countingSortForRadix(array, position):
 
     i = n - 1
     while i >= 0:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
         index = array[i] // position
         output[count[index % 10] - 1] = array[i]
         count[index % 10] -= 1
@@ -229,14 +201,9 @@ def shellSort(array):
     
     while gap > 0:
         for i in range(gap, n):
-            
             temp = array[i]
             j = i
             
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-
             while j >= gap and array[j - gap] > temp:
                 array[j] = array[j - gap]
                 drawArray(array, [j, j-gap])
@@ -258,22 +225,57 @@ def isSorted(array):
 
 def bogoSort(array):
     while not isSorted(array):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
         random.shuffle(array)
         drawArray(array, range(len(array)))
         CLOCK.tick(350)
 
+BUTTONS = [
+    {"label": "Bubble Sort", "function": bubbleSort},
+    {"label": "Insertion Sort", "function": insertionSort},
+    {"label": "Selection Sort", "function": selectionSort},
+    {"label": "Merge Sort", "function": mergeSort},
+    {"label": "Quick Sort", "function": quickSort},
+    {"label": "Heap Sort", "function": heapSort},
+    {"label": "Radix Sort", "function": radixSort},
+    {"label": "Shell Sort", "function": shellSort},
+    {"label": "Bogo Sort", "function": bogoSort},
+]
+
+FONT = pygame.font.SysFont("Arial", 20)
+BUTTON_WIDTH, BUTTON_HEIGHT = 200, 40
+
+# Calculate starting position for the buttons such that they occupy the bottom of the screen
+TOTAL_BUTTONS_HEIGHT = len(BUTTONS) * (BUTTON_HEIGHT + 10)
+START_X, START_Y = 10, HEIGHT - TOTAL_BUTTONS_HEIGHT
+
+def drawButtons():
+    for idx, button in enumerate(BUTTONS):
+        pygame.draw.rect(WIN, (200, 200, 200), (START_X, START_Y + idx * (BUTTON_HEIGHT + 10), BUTTON_WIDTH, BUTTON_HEIGHT))
+        text = FONT.render(button["label"], True, (0, 0, 0))
+        WIN.blit(text, (START_X + (BUTTON_WIDTH - text.get_width()) // 2, START_Y + idx * (BUTTON_HEIGHT + 10) + (BUTTON_HEIGHT - text.get_height()) // 2))
+
+
+def handleButtonClick(pos):
+    for idx, button in enumerate(BUTTONS):
+        if START_X <= pos[0] <= START_X + BUTTON_WIDTH and START_Y + idx * (BUTTON_HEIGHT + 10) <= pos[1] <= START_Y + idx * (BUTTON_HEIGHT + 10) + BUTTON_HEIGHT:
+            return button["function"]
+    return None
+
 def main():
     run = True
+    
     while run:
-        drawArray(array)
+        drawArray(array)  # This will draw the array.
+        drawButtons()     # This will draw the buttons.
+        pygame.display.update()  # Update the display
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        bubbleSort(array)
-        run = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                sorting_algorithm = handleButtonClick(pygame.mouse.get_pos())
+                if sorting_algorithm:
+                    sorting_algorithm(array)
 
     pygame.quit()
 
