@@ -18,9 +18,12 @@ def drawArray(array, color=[]):
     for i in range(len(array)):
         if i in color:
             rectColor = (255, 0, 0)
+
         else:
             rectColor = (0, 128, 255)
+
         pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
+
     pygame.display.update()
 
 def bubbleSort(array):
@@ -35,11 +38,13 @@ def insertionSort(array):
     for i in range(1, len(array)):
         key = array[i]
         j = i - 1
+
         while j >= 0 and key < array[j]:
             array[j + 1] = array[j]
             j -= 1
             drawArray(array, [j, j+1])
             CLOCK.tick(200)
+
         array[j + 1] = key
         drawArray(array, [j, i])
         CLOCK.tick(200)
@@ -47,11 +52,13 @@ def insertionSort(array):
 def selectionSort(array):
     for i in range(len(array)):
         minIdx = i
+
         for j in range(i+1, len(array)):
             if array[j] < array[minIdx]:
                 minIdx = j
             drawArray(array, [j, minIdx])
             CLOCK.tick(200)
+
         array[i], array[minIdx] = array[minIdx], array[i]
         drawArray(array, [i, minIdx])
         CLOCK.tick(200)
@@ -77,13 +84,14 @@ def merge(array, l, m, r):
     i, j, k = 0, 0, l
 
     while i < n1 and j < n2:
-
         if L[i] <= R[j]:
             array[k] = L[i]
             i += 1
+
         else:
             array[k] = R[j]
             j += 1
+
         drawArray(array, [k])
         CLOCK.tick(200)
         k += 1
@@ -188,15 +196,14 @@ def countingSortForRadix(array, position):
 
 def radixSort(array):
     maxNum = max(array)
-
     position = 1
+
     while maxNum // position > 0:
         countingSortForRadix(array, position)
         position *= 10
 
 def shellSort(array):
     n = len(array)
-    
     gap = n // 2
     
     while gap > 0:
@@ -221,6 +228,7 @@ def isSorted(array):
     for i in range(1, n):
         if array[i] < array[i - 1]:
             return False
+        
     return True
 
 def bogoSort(array):
@@ -232,6 +240,7 @@ def bogoSort(array):
 def bucketSort(array):
     arr = []
     slotNum = 10
+
     for i in range(slotNum):
         arr.append([])
 
@@ -247,11 +256,11 @@ def bucketSort(array):
         for j in range (len(arr[i])):
             array[k] = arr[i][j]
             k += 1
+
     return array
 
 def countingSort(array):
     max = max(array)
-
     countArray = [0] * (max + 1)
 
     for num in array:
@@ -273,8 +282,10 @@ def cocktailShaker(array):
     swapped = True
     start = 0
     end = n - 1
+
     while (swapped == True):
         swapped = False
+
         for i in range(start, end):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
@@ -284,7 +295,6 @@ def cocktailShaker(array):
             break
             
         swapped = False
-
         end = end - 1
 
         for i in range(end - 1, start - 1, -1):
@@ -296,17 +306,21 @@ def cocktailShaker(array):
 
 def getNextGap(gap):
     gap = (gap * 10)/13
+
     if gap < 1:
         return 1
+    
     return gap
 
 def combSort(array):
     n = len(array)
     gap = n
     swapped = True
+
     while gap != 1 or swapped == 1:
         gap = getNextGap(gap)
         swapped = False
+        
         for i in range(0, n - gap):
             if array[i] > array[i + gap]:
                 array[i], array[i + gap] = array[i + gap], array[i]
