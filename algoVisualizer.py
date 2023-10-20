@@ -237,7 +237,7 @@ def bogoSort(array):
         drawArray(array, range(len(array)))
         CLOCK.tick(200)
 
-def bucketSort(array):
+'''def bucketSort(array):
     arr = []
     slotNum = 10
 
@@ -245,7 +245,7 @@ def bucketSort(array):
         arr.append([])
 
     for j in array:
-        indexB = int(slotNum * (j - min(array)) / (max(array) - min(array)))
+        indexB = int(slotNum * (j - min(array)) / (max(array) - min(array) + 1))
         arr[indexB].append(j)
 
     for i in range(slotNum):
@@ -259,7 +259,7 @@ def bucketSort(array):
             CLOCK.tick(200)
             k += 1
 
-    return array
+    return array'''
 
 def countingSort(array):
     maxVal = max(array)
@@ -276,7 +276,7 @@ def countingSort(array):
     outputArray = [0] * len(array)
 
     for i in range(len(array) - 1, -1, -1):
-        outputArray[countArray[array[i]] - 1] = array
+        outputArray[countArray[array[i]] - 1] = array[i]
         countArray[array[i]] -= 1
         drawArray(outputArray, [i])
         CLOCK.tick(200)
