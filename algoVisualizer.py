@@ -32,16 +32,18 @@ array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
 
 def drawArray(array, color=[]):
     WIN.fill((0, 0, 0))
+    remainder = WIDTH % ARRAY_SIZE
     for i in range(len(array)):
         if i in color:
             rectColor = (255, 0, 0)
-
         else:
             rectColor = (0, 128, 255)
-
-        pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
+        
+        extraWidth = 1 if i < remainder else 0
+        pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH + min(i, remainder), HEIGHT - array[i], RECT_WIDTH + extraWidth, array[i]))
 
     pygame.display.update()
+
 
 def bubbleSort(array):
     for i in range(len(array)):
