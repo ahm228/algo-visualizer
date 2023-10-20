@@ -245,7 +245,7 @@ def bucketSort(array):
         arr.append([])
 
     for j in array:
-        indexB = int(slotNum * j)
+        indexB = int(slotNum * (j - min(array)) / (max(array) - min(array)))
         arr[indexB].append(j)
 
     for i in range(slotNum):
@@ -262,15 +262,15 @@ def bucketSort(array):
     return array
 
 def countingSort(array):
-    max = max(array)
-    countArray = [0] * (max + 1)
+    maxVal = max(array)
+    countArray = [0] * (maxVal + 1)
 
     for num in array:
         countArray[num] += 1
         drawArray(array, [num])
         CLOCK.tick(200)
     
-    for i in range(1, max + 1):
+    for i in range(1, maxVal + 1):
         countArray[i] += countArray[i - 1]
 
     outputArray = [0] * len(array)
@@ -315,7 +315,7 @@ def cocktailShaker(array):
         start = start + 1
 
 def getNextGap(gap):
-    gap = (gap * 10)/13
+    gap = int((gap * 10) / 13)
 
     if gap < 1:
         return 1
