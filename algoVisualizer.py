@@ -255,6 +255,8 @@ def bucketSort(array):
     for i in range(slotNum):
         for j in range (len(arr[i])):
             array[k] = arr[i][j]
+            drawArray(array, [k])
+            CLOCK.tick(200)
             k += 1
 
     return array
@@ -265,6 +267,8 @@ def countingSort(array):
 
     for num in array:
         countArray[num] += 1
+        drawArray(array, [num])
+        CLOCK.tick(200)
     
     for i in range(1, max + 1):
         countArray[i] += countArray[i - 1]
@@ -274,6 +278,8 @@ def countingSort(array):
     for i in range(len(array) - 1, -1, -1):
         outputArray[countArray[array[i]] - 1] = array
         countArray[array[i]] -= 1
+        drawArray(outputArray, [i])
+        CLOCK.tick(200)
     
     return outputArray
 
@@ -289,6 +295,8 @@ def cocktailShaker(array):
         for i in range(start, end):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
+                drawArray(array, [i, i + 1])
+                CLOCK.tick(200)
                 swapped = True
 
         if (swapped == False):
@@ -300,6 +308,8 @@ def cocktailShaker(array):
         for i in range(end - 1, start - 1, -1):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
+                drawArray(array, [i, i + 1])
+                CLOCK.tick(200)
                 swapped = True
 
         start = start + 1
@@ -324,6 +334,8 @@ def combSort(array):
         for i in range(0, n - gap):
             if array[i] > array[i + gap]:
                 array[i], array[i + gap] = array[i + gap], array[i]
+                drawArray(array, [i, i + int(gap)])
+                CLOCK.tick(200)
                 swapped = True
 
 '''
