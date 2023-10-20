@@ -3,6 +3,15 @@ import random
 
 pygame.init()
 
+while True:
+    try:
+        FPS = int(input("Please enter the desired frame rate (Note: 200 is recommended): "))
+        if FPS <= 0:
+            raise ValueError
+        break
+    except ValueError:
+        print("Please enter a valid positive integer for the speed.")
+
 WIDTH = 800
 HEIGHT = 600
 ARRAY_SIZE = 200
@@ -32,7 +41,7 @@ def bubbleSort(array):
             if array[j] > array[j + 1]:
                 array[j], array[j + 1] = array[j + 1], array[j]
                 drawArray(array, [j, j+1])
-                CLOCK.tick(200)
+                CLOCK.tick(FPS)
 
 def insertionSort(array):
     for i in range(1, len(array)):
@@ -43,11 +52,11 @@ def insertionSort(array):
             array[j + 1] = array[j]
             j -= 1
             drawArray(array, [j, j+1])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
 
         array[j + 1] = key
         drawArray(array, [j, i])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
 
     return array
 
@@ -59,11 +68,11 @@ def selectionSort(array):
             if array[j] < array[minIdx]:
                 minIdx = j
             drawArray(array, [j, minIdx])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
 
         array[i], array[minIdx] = array[minIdx], array[i]
         drawArray(array, [i, minIdx])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
 
 def mergeSort(array, l=0, r=None):
     if r is None:
@@ -95,20 +104,20 @@ def merge(array, l, m, r):
             j += 1
 
         drawArray(array, [k])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         k += 1
 
     while i < n1:
         array[k] = L[i]
         drawArray(array, [k])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         i += 1
         k += 1
 
     while j < n2:
         array[k] = R[j]
         drawArray(array, [k])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         j += 1
         k += 1
 
@@ -132,11 +141,11 @@ def partition(array, low, high):
             i = i + 1
             array[i], array[j] = array[j], array[i]
             drawArray(array, [i, j])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
 
     array[i + 1], array[high] = array[high], array[i + 1]
     drawArray(array, [i + 1, high])
-    CLOCK.tick(200)
+    CLOCK.tick(FPS)
     
     return i + 1
 
@@ -149,7 +158,7 @@ def heapSort(array):
     for i in range(n-1, 0, -1):
         array[i], array[0] = array[0], array[i]
         drawArray(array, [i, 0])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         heapify(array, i, 0)
 
 def heapify(array, n, i):
@@ -166,7 +175,7 @@ def heapify(array, n, i):
     if largest != i:
         array[i], array[largest] = array[largest], array[i]
         drawArray(array, [i, largest])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         
         heapify(array, n, largest)
 
@@ -189,12 +198,12 @@ def countingSortForRadix(array, position):
         count[index % 10] -= 1
         i -= 1
         drawArray(array, [i])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
 
     for i in range(len(array)):
         array[i] = output[i]
         drawArray(array, [i])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
 
 def radixSort(array):
     maxNum = max(array)
@@ -216,12 +225,12 @@ def shellSort(array):
             while j >= gap and array[j - gap] > temp:
                 array[j] = array[j - gap]
                 drawArray(array, [j, j-gap])
-                CLOCK.tick(200)
+                CLOCK.tick(FPS)
                 j -= gap
             
             array[j] = temp
             drawArray(array, [j])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
 
         gap //= 2
 
@@ -237,7 +246,7 @@ def bogoSort(array):
     while not isSorted(array):
         random.shuffle(array)
         drawArray(array, range(len(array)))
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
 
 def bucketSort(array, drawArray=None, CLOCK=None):
     numBuckets = len(array)
@@ -260,7 +269,7 @@ def bucketSort(array, drawArray=None, CLOCK=None):
             array[k] = num
             if drawArray and CLOCK:
                 drawArray(array, [k])
-                CLOCK.tick(200)
+                CLOCK.tick(FPS)
             k += 1
 
     return array
@@ -272,7 +281,7 @@ def countingSort(array):
     for num in array:
         countArray[num] += 1
         drawArray(array, [num])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
     
     for i in range(1, maxVal + 1):
         countArray[i] += countArray[i - 1]
@@ -283,7 +292,7 @@ def countingSort(array):
         outputArray[countArray[array[i]] - 1] = array[i]
         countArray[array[i]] -= 1
         drawArray(outputArray, [i])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
     
     return outputArray
 
@@ -300,7 +309,7 @@ def cocktailShaker(array):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
                 drawArray(array, [i, i + 1])
-                CLOCK.tick(200)
+                CLOCK.tick(FPS)
                 swapped = True
 
         if (swapped == False):
@@ -313,7 +322,7 @@ def cocktailShaker(array):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
                 drawArray(array, [i, i + 1])
-                CLOCK.tick(200)
+                CLOCK.tick(FPS)
                 swapped = True
 
         start = start + 1
@@ -339,7 +348,7 @@ def combSort(array):
             if array[i] > array[i + gap]:
                 array[i], array[i + gap] = array[i + gap], array[i]
                 drawArray(array, [i, i + int(gap)])
-                CLOCK.tick(200)
+                CLOCK.tick(FPS)
                 swapped = True
 
 def gnomeSort(array):
@@ -350,7 +359,7 @@ def gnomeSort(array):
         else:
             array[index], array[index-1] = array[index-1], array[index]
             drawArray(array, [index, index-1])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
             index -= 1
 
 def pancakeFlip(array, k):
@@ -358,7 +367,7 @@ def pancakeFlip(array, k):
     while start < k:
         array[start], array[k] = array[k], array[start]
         drawArray(array, [start, k])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         start += 1
         k -= 1
 
@@ -379,7 +388,7 @@ def stoogeSort(array, l=0, h=None):
     if array[l] > array[h]:
         array[l], array[h] = array[h], array[l]
         drawArray(array, [l, h])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
         
     if h-l+1 > 2:
         t = (h-l+1) // 3
@@ -406,7 +415,7 @@ def cycleSort(array):
         array[position], item = item, array[position]
         writes += 1
         drawArray(array, [cycleStart, position])
-        CLOCK.tick(200)
+        CLOCK.tick(FPS)
 
         while position != cycleStart:
             position = cycleStart
@@ -418,7 +427,7 @@ def cycleSort(array):
             array[position], item = item, array[position]
             writes += 1
             drawArray(array, [cycleStart, position])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
 
     return writes
 
@@ -434,7 +443,7 @@ def spaghettiSort(array):
         for _ in range(count):
             array[i] = value
             drawArray(array, [i])
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
             i += 1
 
 def bitonicSort(arr, up=True):
@@ -462,7 +471,7 @@ def bitonicCompare(arr, up):
         if (arr[i] > arr[i + dist]) == up:
             arr[i], arr[i + dist] = arr[i + dist], arr[i]
             drawArray(arr, [i, i + dist])  # Visualization
-            CLOCK.tick(200)
+            CLOCK.tick(FPS)
 
 def bitonicSortWrapper(arr):
     n = len(arr)
@@ -492,7 +501,7 @@ BUTTONS = [
     {"label": "Radix Sort", "function": radixSort},
     {"label": "Shell Sort", "function": shellSort},
     {"label": "Bogo Sort", "function": bogoSort},
-    #{"label": "Bucket Sort", "function": bucketSort},
+    {"label": "Bucket Sort", "function": bucketSort},
     {"label": "Counting Sort", "function": countingSort},
     {"label": "Cocktail Shaker Sort", "function": cocktailShaker},
     {"label": "Comb Sort", "function": combSort},
