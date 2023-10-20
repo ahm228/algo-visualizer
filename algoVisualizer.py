@@ -49,6 +49,8 @@ def insertionSort(array):
         drawArray(array, [j, i])
         CLOCK.tick(200)
 
+    return array
+
 def selectionSort(array):
     for i in range(len(array)):
         minIdx = i
@@ -237,43 +239,51 @@ def bogoSort(array):
         drawArray(array, range(len(array)))
         CLOCK.tick(200)
 
-def bucketSort(array):
-    arr = []
-    slotNum = 10
+def bucketSort(array, drawArray=None, CLOCK=None):
+    numBuckets = len(array)
+    minValue, maxValue = min(array), max(array)
+    if minValue == maxValue:
+        return array
 
-    for i in range(slotNum):
-        arr.append([])
+    buckets = [[] for _ in range(numBuckets)]
 
-    for j in array:
-        indexB = int(slotNum * j)
-        arr[indexB].append(j)
+    for num in array:
+        indexB = int((num - minValue) / (maxValue - minValue) * (numBuckets - 1))
+        buckets[indexB].append(num)
 
-    for i in range(slotNum):
-        arr[i] = insertionSort(arr[i])
+    for i in range(numBuckets):
+        buckets[i] = insertionSort(buckets[i])
 
     k = 0
-    for i in range(slotNum):
-        for j in range (len(arr[i])):
-            array[k] = arr[i][j]
+    for b in buckets:
+        for num in b:
+            array[k] = num
+            if drawArray and CLOCK:
+                drawArray(array, [k])
+                CLOCK.tick(200)
             k += 1
 
     return array
 
 def countingSort(array):
-    max = max(array)
-    countArray = [0] * (max + 1)
+    maxVal = max(array)
+    countArray = [0] * (maxVal + 1)
 
     for num in array:
         countArray[num] += 1
+        drawArray(array, [num])
+        CLOCK.tick(200)
     
-    for i in range(1, max + 1):
+    for i in range(1, maxVal + 1):
         countArray[i] += countArray[i - 1]
 
     outputArray = [0] * len(array)
 
     for i in range(len(array) - 1, -1, -1):
-        outputArray[countArray[array[i]] - 1] = array
+        outputArray[countArray[array[i]] - 1] = array[i]
         countArray[array[i]] -= 1
+        drawArray(outputArray, [i])
+        CLOCK.tick(200)
     
     return outputArray
 
@@ -289,6 +299,8 @@ def cocktailShaker(array):
         for i in range(start, end):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
+                drawArray(array, [i, i + 1])
+                CLOCK.tick(200)
                 swapped = True
 
         if (swapped == False):
@@ -300,12 +312,14 @@ def cocktailShaker(array):
         for i in range(end - 1, start - 1, -1):
             if (array[i] > array[i + 1]):
                 array[i], array[i + 1] = array[i + 1], array[i]
+                drawArray(array, [i, i + 1])
+                CLOCK.tick(200)
                 swapped = True
 
         start = start + 1
 
 def getNextGap(gap):
-    gap = (gap * 10)/13
+    gap = int((gap * 10) / 13)
 
     if gap < 1:
         return 1
@@ -324,29 +338,142 @@ def combSort(array):
         for i in range(0, n - gap):
             if array[i] > array[i + gap]:
                 array[i], array[i + gap] = array[i + gap], array[i]
+                drawArray(array, [i, i + int(gap)])
+                CLOCK.tick(200)
                 swapped = True
 
-'''
-def cycleSort(array):
+def gnomeSort(array):
+    index = 0
+    while index < len(array):
+        if index == 0 or array[index-1] <= array[index]:
+            index += 1
+        else:
+            array[index], array[index-1] = array[index-1], array[index]
+            drawArray(array, [index, index-1])
+            CLOCK.tick(200)
+            index -= 1
+
+def pancakeFlip(array, k):
+    start = 0
+    while start < k:
+        array[start], array[k] = array[k], array[start]
+        drawArray(array, [start, k])
+        CLOCK.tick(200)
+        start += 1
+        k -= 1
 
 def pancakeSort(array):
+    n = len(array)
+    while n > 1:
+        mi = array.index(max(array[0:n]))
+        pancakeFlip(array, mi)
+        pancakeFlip(array, n-1)
+        n -= 1
 
-def introSort(array):
+def stoogeSort(array, l=0, h=None):
+    if h is None:
+        h = len(array) - 1
+    if l >= h:
+        return
+    
+    if array[l] > array[h]:
+        array[l], array[h] = array[h], array[l]
+        drawArray(array, [l, h])
+        CLOCK.tick(200)
+        
+    if h-l+1 > 2:
+        t = (h-l+1) // 3
+        stoogeSort(array, l, h-t)
+        stoogeSort(array, l+t, h)
+        stoogeSort(array, l, h-t)
 
-def bitonicSort(array):
+def cycleSort(array):
+    writes = 0
+
+    for cycleStart in range(0, len(array) - 1):
+        item = array[cycleStart]
+
+        position = cycleStart
+        for i in range(cycleStart + 1, len(array)):
+            if array[i] < item:
+                position += 1
+
+        if position == cycleStart:
+            continue
+
+        while item == array[position]:
+            position += 1
+        array[position], item = item, array[position]
+        writes += 1
+        drawArray(array, [cycleStart, position])
+        CLOCK.tick(200)
+
+        while position != cycleStart:
+            position = cycleStart
+            for i in range(cycleStart + 1, len(array)):
+                if array[i] < item:
+                    position += 1
+            while item == array[position]:
+                position += 1
+            array[position], item = item, array[position]
+            writes += 1
+            drawArray(array, [cycleStart, position])
+            CLOCK.tick(200)
+
+    return writes
 
 def spaghettiSort(array):
+    maxVal = max(array)
+    counters = [0] * (maxVal + 1)
 
-def timSort(array):
+    for num in array:
+        counters[num] += 1
 
-def treeSort(array):
+    i = 0
+    for value, count in enumerate(counters):
+        for _ in range(count):
+            array[i] = value
+            drawArray(array, [i])
+            CLOCK.tick(200)
+            i += 1
 
-def cubeSort(array):
+def bitonicSort(arr, up=True):
+    n = len(arr)
+    if n <= 1:
+        return arr
+    else:
+        firstHalf = bitonicSort(arr[:n // 2], True)
+        secondHalf = bitonicSort(arr[n // 2:], False)
+        return bitonicMerge(firstHalf + secondHalf, up)
 
-def gnomeSort(array):
+def bitonicMerge(arr, up):
+    n = len(arr)
+    if n == 1:
+        return arr
+    else:
+        bitonicCompare(arr, up)
+        firstHalf = bitonicMerge(arr[:n // 2], up)
+        secondHalf = bitonicMerge(arr[n // 2:], up)
+        return firstHalf + secondHalf
 
-def stoogeSort(array):
-'''
+def bitonicCompare(arr, up):
+    dist = len(arr) // 2
+    for i in range(dist):
+        if (arr[i] > arr[i + dist]) == up:
+            arr[i], arr[i + dist] = arr[i + dist], arr[i]
+            drawArray(arr, [i, i + dist])  # Visualization
+            CLOCK.tick(200)
+
+def bitonicSortWrapper(arr):
+    n = len(arr)
+    nextPower = 1 << (n - 1).bit_length()
+    
+    paddingNeeded = nextPower - n
+    if paddingNeeded:
+        arr += [float('inf')] * paddingNeeded
+    
+    sortedArray = bitonicSort(arr)
+    return sortedArray[:n]
 
 def regenerateArray():
     global array
@@ -369,12 +496,18 @@ BUTTONS = [
     {"label": "Counting Sort", "function": countingSort},
     {"label": "Cocktail Shaker Sort", "function": cocktailShaker},
     {"label": "Comb Sort", "function": combSort},
+    {"label": "Gnome Sort", "function": gnomeSort},
+    {"label": "Pancake Sort", "function": pancakeSort},
+    {"label": "Stooge Sort", "function": stoogeSort},
+    {"label": "Cycle Sort", "function": cycleSort},
+    {"label": "Spaghetti Sort", "function": spaghettiSort},
+    {"label": "Bitonic Sort", "function": bitonicSortWrapper}
 ]
 
 BUTTONS.append({"label": "Restart", "function": "RESTART"})
 
 FONT = pygame.font.SysFont("Arial", 20)
-BUTTON_WIDTH, BUTTON_HEIGHT = 150, 30
+BUTTON_WIDTH, BUTTON_HEIGHT = 150, 20
 
 TOTAL_BUTTONS_HEIGHT = len(BUTTONS) * (BUTTON_HEIGHT + 10)
 START_X, START_Y = 10, HEIGHT - TOTAL_BUTTONS_HEIGHT
