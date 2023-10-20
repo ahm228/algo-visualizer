@@ -377,7 +377,7 @@ BUTTONS = [
     {"label": "Radix Sort", "function": radixSort},
     {"label": "Shell Sort", "function": shellSort},
     {"label": "Bogo Sort", "function": bogoSort},
-    {"label": "Bucket Sort", "function": bucketSort},
+    #{"label": "Bucket Sort", "function": bucketSort},
     {"label": "Counting Sort", "function": countingSort},
     {"label": "Cocktail Shaker Sort", "function": cocktailShaker},
     {"label": "Comb Sort", "function": combSort},
