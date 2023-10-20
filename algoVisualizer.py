@@ -12,9 +12,17 @@ while True:
     except ValueError:
         print("Please enter a valid positive integer for the speed.")
 
+while True:
+    try:
+        ARRAY_SIZE = int(input("Please enter the desired size of the array: "))
+        if ARRAY_SIZE <= 0:
+            raise ValueError
+        break
+    except ValueError:
+        print("Please enter a valid positive integer for the array size.")
+
 WIDTH = 800
 HEIGHT = 600
-ARRAY_SIZE = 200
 RECT_WIDTH = WIDTH // ARRAY_SIZE
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sorting Algorithm Visualizer")
@@ -548,9 +556,9 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                sorting_algorithm = handleButtonClick(pygame.mouse.get_pos())
-                if sorting_algorithm:
-                    sorting_algorithm(array)
+                sortingAlgorithm = handleButtonClick(pygame.mouse.get_pos())
+                if sortingAlgorithm:
+                    sortingAlgorithm(array)
 
     pygame.quit()
 
