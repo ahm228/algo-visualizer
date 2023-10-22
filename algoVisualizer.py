@@ -28,7 +28,42 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sorting Algorithm Visualizer")
 CLOCK = pygame.time.Clock()
 
-array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
+def generateNearlySorted(length):
+    array = [i for i in range(length)]
+    swaps = length // 10
+    for _ in range(swaps):
+        i, j = random.randint(0, length - 1), random.randint(0, length - 1)
+        array[i], array[j] = array[j], array[i]
+    return array
+
+def generateReversed(length):
+    return [i for i in range(length, 0, -1)]
+
+def generateFewUnique(length):
+    uniqueValues = length // 5
+    return [random.randint(0, uniqueValues) for _ in range(length)]
+
+while True:
+    print("Choose a pattern:")
+    print("1. Random")
+    print("2. Nearly Sorted")
+    print("3. Reversed")
+    print("4. Few Unique")
+    choice = input("Enter choice (1/2/3/4): ")
+
+    if choice == "1":
+        array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
+    elif choice == "2":
+        array = generateNearlySorted(ARRAY_SIZE)
+    elif choice == "3":
+        array = generateReversed(ARRAY_SIZE)
+    elif choice == "4":
+        array = generateFewUnique(ARRAY_SIZE)
+    else:
+        print("Invalid choice. Please try again.")
+        continue
+
+    break
 
 def drawArray(array, color=[]):
     WIN.fill((0, 0, 0))
