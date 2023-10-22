@@ -28,7 +28,55 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sorting Algorithm Visualizer")
 CLOCK = pygame.time.Clock()
 
-array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
+def generateNearlySorted(length):
+    array = [i for i in range(length)]
+    swaps = length // 10
+    for _ in range(swaps):
+        i, j = random.randint(0, length - 1), random.randint(0, length - 1)
+        array[i], array[j] = array[j], array[i]
+    return array
+
+def generateReversed(length):
+    return [i for i in range(length, 0, -1)]
+
+def generateFewUnique(length):
+    uniqueValues = length // 5
+    return [random.randint(0, uniqueValues) for _ in range(length)]
+
+def getArrayPattern():
+    print("Choose a pattern:")
+    print("1. Random")
+    print("2. Nearly Sorted")
+    print("3. Reversed")
+    print("4. Few Unique")
+    choice = input("Enter choice (1/2/3/4): ")
+
+    if choice == "1":
+        array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
+    elif choice == "2":
+        array = generateNearlySorted(ARRAY_SIZE)
+    elif choice == "3":
+        array = generateReversed(ARRAY_SIZE)
+    elif choice == "4":
+        array = generateFewUnique(ARRAY_SIZE)
+    else:
+        print("Invalid choice. Please try again.")
+
+    return choice, array
+
+def regenerateArray(choice):
+    global array
+    if choice == "1":
+        array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
+    elif choice == "2":
+        array = generateNearlySorted(ARRAY_SIZE)
+    elif choice == "3":
+        array = generateReversed(ARRAY_SIZE)
+    elif choice == "4":
+        array = generateFewUnique(ARRAY_SIZE)
+    drawArray(array)
+    drawButtons()
+    pygame.display.update()
 
 def drawArray(array, color=[]):
     WIN.fill((0, 0, 0))
@@ -494,13 +542,6 @@ def bitonicSortWrapper(arr):
     sortedArray = bitonicSort(arr)
     return sortedArray[:n]
 
-def regenerateArray():
-    global array
-    array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
-    drawArray(array)
-    drawButtons()
-    pygame.display.update()
-
 BUTTONS = [
     {"label": "Bubble Sort", "function": bubbleSort},
     {"label": "Insertion Sort", "function": insertionSort},
@@ -538,17 +579,18 @@ def drawButtons():
         WIN.blit(text, (START_X + (BUTTON_WIDTH - text.get_width()) // 2, START_Y + idx * (BUTTON_HEIGHT + 10) + (BUTTON_HEIGHT - text.get_height()) // 2))
 
 
-def handleButtonClick(pos):
+def handleButtonClick(pos, choice):
     for idx, button in enumerate(BUTTONS):
         if START_X <= pos[0] <= START_X + BUTTON_WIDTH and START_Y + idx * (BUTTON_HEIGHT + 10) <= pos[1] <= START_Y + idx * (BUTTON_HEIGHT + 10) + BUTTON_HEIGHT:
             if button["function"] == "RESTART":
-                regenerateArray()
+                regenerateArray(choice)
                 return None
             return button["function"]
     return None
 
 def main():
     run = True
+    choice, array = getArrayPattern()
     
     while run:
         drawButtons()
@@ -558,7 +600,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                sortingAlgorithm = handleButtonClick(pygame.mouse.get_pos())
+                sortingAlgorithm = handleButtonClick(pygame.mouse.get_pos(), choice)
                 if sortingAlgorithm:
                     sortingAlgorithm(array)
 
