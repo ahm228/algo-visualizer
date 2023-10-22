@@ -12,9 +12,17 @@ while True:
     except ValueError:
         print("Please enter a valid positive integer for the speed.")
 
+while True:
+    try:
+        ARRAY_SIZE = int(input("Please enter the desired size of the array: "))
+        if ARRAY_SIZE <= 0:
+            raise ValueError
+        break
+    except ValueError:
+        print("Please enter a valid positive integer for the array size.")
+
 WIDTH = 800
 HEIGHT = 600
-ARRAY_SIZE = 200
 RECT_WIDTH = WIDTH // ARRAY_SIZE
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sorting Algorithm Visualizer")
@@ -24,16 +32,18 @@ array = [random.randint(10, HEIGHT - 10) for _ in range(ARRAY_SIZE)]
 
 def drawArray(array, color=[]):
     WIN.fill((0, 0, 0))
+    remainder = WIDTH % ARRAY_SIZE
     for i in range(len(array)):
         if i in color:
             rectColor = (255, 0, 0)
-
         else:
             rectColor = (0, 128, 255)
-
-        pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH, HEIGHT - array[i], RECT_WIDTH, array[i]))
+        
+        extraWidth = 1 if i < remainder else 0
+        pygame.draw.rect(WIN, rectColor, (i * RECT_WIDTH + min(i, remainder), HEIGHT - array[i], RECT_WIDTH + extraWidth, array[i]))
 
     pygame.display.update()
+
 
 def bubbleSort(array):
     for i in range(len(array)):
@@ -548,9 +558,9 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                sorting_algorithm = handleButtonClick(pygame.mouse.get_pos())
-                if sorting_algorithm:
-                    sorting_algorithm(array)
+                sortingAlgorithm = handleButtonClick(pygame.mouse.get_pos())
+                if sortingAlgorithm:
+                    sortingAlgorithm(array)
 
     pygame.quit()
 
